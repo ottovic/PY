@@ -9,4 +9,3 @@ print(wrds[-1])
 
 emberek = ["Kati","Ottó"]
 Print(emberek)
-
