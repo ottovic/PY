@@ -7,3 +7,6 @@ print(wrd[-3:100])
 print(len(wrds))
 print(wrds[-1])
 
+emberek = ["Kati","Ottó"]
+Print(emberek)
+
