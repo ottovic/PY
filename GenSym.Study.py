@@ -3,7 +3,7 @@ print("Hello world")
 class Ember:
     Genere = 1
     Name = ""
-    Locus = ["B","W","W"]
+    Locus = ["W","B","W"]
     Color = 0
     ColorStr = ""
 
@@ -15,8 +15,9 @@ color = 0
 for i in range(3):
     stri = stri + Jozsi.Locus[i]
     if Jozsi.Locus[i] == "B":
-        i = i + 1
-Jozsi.Color = i;
+        color = color + 1
+    i = i + 1
+Jozsi.Color = color;
 Jozsi.ColorStr = str(Jozsi.Color)
 stri = stri + ":" + Jozsi.ColorStr
 
