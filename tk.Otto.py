@@ -29,7 +29,12 @@ class Ember:
         self.ColorStr = str(self.Color)
 
     def display(self):
-        text = self.name + ":" + self.ColorStr
+        text = self.name
+        if(self.Gender=="M"):
+            text = text + " MALE "
+        else:
+            text = text + " FEMALE "
+        text = text + ":" + self.ColorStr
         return(text)
         
 
@@ -42,16 +47,15 @@ def doSomething():
     global htmlText
     global Jozsi
     htmlText = htmlText + "<tr><td>" + Jozsi.display()+ "</td></tr>"
-    print("I am doing something: " + htmlText)
     displayHtml()
 
 def displayHtml():
     global htmlText
     global root
     global myhtmlframe
-    print ("displaying")
-    htmlText = htmlText + "</table>"
-    myhtmlframe.load_html(htmlText) #Load some HTML code
+    htmlTextFinal = htmlText + "</table>"
+#    print ("displaying: " + htmlTextFinal)
+    myhtmlframe.load_html(htmlTextFinal) #Load some HTML code
     myhtmlframe.pack(fill="both", expand=True) #attach the HtmlFrame widget to the parent window
     button = Button(text="PressMe",command=doSomething)
     button.place(x=500, y=50)
@@ -59,7 +63,7 @@ def displayHtml():
 
 root = tk.Tk()
 root.geometry("700x400")
-htmlText = "<h1>Hello, World!</h1><table>"
+htmlText = "<h1>Hello, World!</h1><table  border = 1>"
 # Label = tk.Label(root, text="Populáció genetikai szimuláció")
 # Label.pack()
 root.title('Populáció genetikai szimuláció')
