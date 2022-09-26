@@ -8,22 +8,26 @@ from tkinterweb import HtmlFrame
 class Ember:
     Genere = 1
     Name = ""
-    Allel1 = ["W","B","W"]
-    Allel2 = ["W","W","B"]
+    Allel1 = ["X","X","X"]
+    Allel2 = ["X","X","X"]
     Gender = "M"
     Color = 0
     ColorStr = ""
+    Kids = 5
 
     def __init__(self,name,gender,allel1,allel2):
         color = 0
+        print("INIT: " + name)
 
         for i in range(len(self.Allel1)):
-            self.Allel1[i] = allel1[i:1]
-            self.Allel2[i] = allel2[i:1]
+            print("   " + str(i) + allel1[i])
+            self.Allel1[i] = allel1[i]
+            self.Allel2[i] = allel2[i]
             self.Gender = gender
 
             if(self.Allel1[i]=="B" or self.Allel2[i] == "B"):
                 color = color + 1
+        print(self.Allel1)
         self.Color = color
         self.name = name
         self.ColorStr = str(self.Color)
@@ -39,7 +43,7 @@ class Ember:
         
 
 Adam = Ember(name = "Adam",allel1 = "BWW", allel2 = "BWW",gender = "M")
-Eva = Ember(name = "Eva",allel1 = "BWW", allel2 = "BWW",gender = "F")
+Eva = Ember(name = "Eva",allel1 = "WBB", allel2 = "BBW",gender = "F")
 i = 1
 print("*** STARTING")
 
