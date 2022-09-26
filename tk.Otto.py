@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import tkinter as tk
 from tkinterweb import HtmlFrame
+from PIL import ImageTk, Image
 
 
 class Ember:
@@ -76,12 +77,22 @@ def displayHtml():
 
 root = tk.Tk()
 root.geometry("700x400")
+
 myhtmlframe = HtmlFrame(root,messages_enabled = False) #create HTML browser
 htmlText = "<h1>Hello, World!</h1><table  border = 1>"
 # Label = tk.Label(root, text="Populáció genetikai szimuláció")
 # Label.pack()
 root.title('Populáció genetikai szimuláció')
 root.resizable(width=True, height=True)
+
+# man = Image.open(r"D:\tmp\Adam.B.jpg")
+man = Image.open(r"Adam.B.jpg")
+#man = img.resize((20, 20), Image.ANTIALIAS)
+test = ImageTk.PhotoImage(man)
+label1 = tk.Label(image=test)
+label1.image = test
+label1.place(x=10, y=30)
+
 button = Button(text="PressMe",command=doSomething)
 button.place(x=500, y=50)
 
