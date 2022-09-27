@@ -41,10 +41,27 @@ class Ember:
             text = text + " FEMALE "
         text = text + ":" + self.ColorStr
         return(text)
+
+    def getImageFile(self):
+        if (self.Color == 0):
+            text = self.Gender + "WWW.png"
+        elif(self.Color == 1):
+            text = self.Gender + "BWW.png"
+        elif(self.Color == 2):
+            text = self.Gender + "BBW.png"
+        else:
+            text = self.Gender + "BBB.png"
+
+        return(text)
+
+    def displayHtmlImage(self):
+        text = "<td><img src=\"" + self.getImageFile()+ "\"</td>"
+        return(text)
+        
         
 
 Adam = Ember(name = "Adam",allel1 = "BWW", allel2 = "BWW",gender = "M")
-Eva = Ember(name = "Eva",allel1 = "WBB", allel2 = "BBW",gender = "F")
+Eva = Ember(name = "Eva",allel1 = "WWW", allel2 = "WWW",gender = "F")
 i = 1
 print("*** STARTING")
 
@@ -58,12 +75,12 @@ def doSomething():
     i = i + 1
     if int(i/2) == i/2 :
         ember = Adam
-        print("Páros " + str(i))
+        print("Páros " + str(i) + "-" + ember.displayHtmlImage())
     else :
         ember = Eva
         print("Páratlan " + str(i))
     print("*** I am doing something ***");
-    htmlText = htmlText + "<tr><td>" + ember.display()+ "</td></tr>"
+    htmlText = htmlText + "<tr><td>" + ember.display()+ "</td>" + ember.displayHtmlImage() + "</tr>"
     displayHtml()
 
 def displayHtml():
@@ -75,23 +92,37 @@ def displayHtml():
     myhtmlframe.load_html(htmlTextFinal) #Load some HTML code
     myhtmlframe.pack(fill="both", expand=True) #attach the HtmlFrame widget to the parent window
 
+def displayMan(pEmber,pX,pY):
+    global tk
+#    filename = "r" + pEmber.getImageFile()
+    filename = pEmber.getImageFile()
+    print(filename)
+    man = Image.open(filename)
+#man = img.resize((20, 20), Image.ANTIALIAS)
+    test = ImageTk.PhotoImage(man)
+    label1 = tk.Label(image=test)
+    label1.image = test
+    label1.place(x=pX, y=pY)
+
+
 root = tk.Tk()
-root.geometry("700x400")
+root.geometry("1500x700")
 
 myhtmlframe = HtmlFrame(root,messages_enabled = False) #create HTML browser
-htmlText = "<h1>Hello, World!</h1><table  border = 1>"
+htmlText = "<h1>Populáció genetikai szimuláció</h1><table  border = 1>"
 # Label = tk.Label(root, text="Populáció genetikai szimuláció")
 # Label.pack()
 root.title('Populáció genetikai szimuláció')
 root.resizable(width=True, height=True)
 
-# man = Image.open(r"D:\tmp\Adam.B.jpg")
-man = Image.open(r"Adam.B.jpg")
-#man = img.resize((20, 20), Image.ANTIALIAS)
-test = ImageTk.PhotoImage(man)
-label1 = tk.Label(image=test)
-label1.image = test
-label1.place(x=10, y=30)
+displayMan(Adam,300,200)
+displayMan(Eva,400,300)
+
+# man = Image.open(r"BBB.jpg")
+# test = ImageTk.PhotoImage(man)
+# label1 = tk.Label(image=test)
+# label1.image = test
+# label1.place(x=10, y=30)
 
 button = Button(text="PressMe",command=doSomething)
 button.place(x=500, y=50)
