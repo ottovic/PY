@@ -75,8 +75,20 @@ def displayHtml():
     myhtmlframe.load_html(htmlTextFinal) #Load some HTML code
     myhtmlframe.pack(fill="both", expand=True) #attach the HtmlFrame widget to the parent window
 
+def displayMan(file,pX,pY):
+    global tk
+    filename = "r" + file
+    print(filename)
+    man = Image.open(file)
+#man = img.resize((20, 20), Image.ANTIALIAS)
+    test = ImageTk.PhotoImage(man)
+    label1 = tk.Label(image=test)
+    label1.image = test
+    label1.place(x=pX, y=pY)
+
+
 root = tk.Tk()
-root.geometry("700x400")
+root.geometry("1500x700")
 
 myhtmlframe = HtmlFrame(root,messages_enabled = False) #create HTML browser
 htmlText = "<h1>Hello, World!</h1><table  border = 1>"
@@ -85,13 +97,15 @@ htmlText = "<h1>Hello, World!</h1><table  border = 1>"
 root.title('Populáció genetikai szimuláció')
 root.resizable(width=True, height=True)
 
-# man = Image.open(r"D:\tmp\Adam.B.jpg")
-man = Image.open(r"Adam.B.jpg")
-#man = img.resize((20, 20), Image.ANTIALIAS)
-test = ImageTk.PhotoImage(man)
-label1 = tk.Label(image=test)
-label1.image = test
-label1.place(x=10, y=30)
+displayMan("BBB.jpg",50,100)
+displayMan("BWW.jpg",200,100)
+
+
+# man = Image.open(r"BBB.jpg")
+# test = ImageTk.PhotoImage(man)
+# label1 = tk.Label(image=test)
+# label1.image = test
+# label1.place(x=10, y=30)
 
 button = Button(text="PressMe",command=doSomething)
 button.place(x=500, y=50)
