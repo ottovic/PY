@@ -15,12 +15,12 @@ class Ember:
     Gender = "M"
     Color = 0
     ColorStr = ""
-    Kids = 5
+    Kids = 12
     Partners = 2
 
     def __init__(self,Name,Gender,pAllel1,pAllel2):
         color = 0
-        print("INIT: " + Name + ":" + pAllel1 + "/" + pAllel2)
+#        print("INIT: " + Name + ":" + pAllel1 + "/" + pAllel2)
 
         self.Allel1 = []
         self.Allel2 = []
@@ -40,7 +40,7 @@ class Ember:
         self.Name = Name
 #        self.ColorStr = str(self.Color)
         self.colorize()
-        print("...Color:" + self.ColorStr)
+#        print("...Color:" + self.ColorStr)
 
     def colorize(self):
         color = 0
@@ -72,7 +72,7 @@ class Ember:
         return(text)
 
     def displayHtmlImage(self):
-        text = "<td><img src=\"" + self.getImageFile()+ "\"</td>"
+        text = "<img src=\"" + self.getImageFile()+ "\">"
         return(text)
         
 i = 1
@@ -85,12 +85,14 @@ random.seed(a=None, version=2)
 #----------------------------------
 def birth(Name,Apa,Anya):
     global CYCLE
+    global NextGen
 
-    print("*** KID CREATION")
-    print("apa:" + Apa.Name +   ":" + Apa.Gender +  ":" + Apa.Allel1[0]  + Apa.Allel1[1]  + Apa.Allel1[2])
-    print("anya:" + Anya.Name + ":" + Anya.Gender + ":" + Anya.Allel1[0] + Anya.Allel1[1] + Anya.Allel1[2])
+    print("*** KID CREATION ***")
+    print("apa: " + Apa.Name +  ":" + Apa.Gender +  ":" + Apa.Allel1[0]  + Apa.Allel1[1]  + Apa.Allel1[2]  + "/" +  Apa.Allel2[0]  + Apa.Allel2[1]  + Apa.Allel2[2])
+    print("anya:" + Anya.Name + ":" + Anya.Gender + ":" + Anya.Allel1[0] + Anya.Allel1[1] + Anya.Allel1[2] + "/" +  Anya.Allel2[0] + Anya.Allel2[1] + Anya.Allel2[2])
     
     if(Anya.Kids == 0):
+        print("...anya " + Anya.Name + " exhausted")
         return(-1)
 
     kid = Ember(Name = Name + " ben " + Apa.Name,Gender="X",pAllel1="XXX",pAllel2="XXX")
@@ -119,6 +121,7 @@ def birth(Name,Apa,Anya):
 
     print (kid.display() + "-" + kid.Allel1[0] + kid.Allel1[1] + kid.Allel1[2] + "/" + kid.Allel2[0] + kid.Allel2[1] + kid.Allel2[2])
     Anya.Kids = Anya.Kids - 1
+    NextGen.append(kid)
     return(kid)
 
 # -----------------------------
@@ -127,7 +130,6 @@ def birth(Name,Apa,Anya):
 def doSomething():
     global htmlText
     global ember
-    global myHtmlFrams
     global i
     i = i + 1
     if int(i/2) == i/2 :
@@ -140,15 +142,18 @@ def doSomething():
     htmlText = htmlText + "<tr><td>" + ember.display()+ "</td>" + ember.displayHtmlImage() + "</tr>"
     displayHtml()
 
-# Displays HTML table
+# -------------
+# Displays HTML
+# -------------
 def displayHtml():
     global htmlText
-    global root
     global myhtmlframe
-    htmlTextFinal = htmlText + "</table>"
-#    print ("displaying: " + htmlTextFinal)
+#    htmlTextFinal = htmlText + "</table>"
+    htmlTextFinal = htmlText
+#    print(htmlText)
     myhtmlframe.load_html(htmlTextFinal) #Load some HTML code
     myhtmlframe.pack(fill="both", expand=True) #attach the HtmlFrame widget to the parent window
+    return()
 
 # -----------------------------------------------------
 # Displays an image of a human at the given coordinates
@@ -157,7 +162,7 @@ def displayMan(pEmber,pX,pY):
     global tk
 #    filename = "r" + pEmber.getImageFile()
     filename = pEmber.getImageFile()
-    print(filename)
+#    print(filename)
     man = Image.open(filename)
     test = ImageTk.PhotoImage(man)
     label1 = tk.Label(image=test)
@@ -172,29 +177,63 @@ root = tk.Tk()
 root.geometry("1500x700")
 
 myhtmlframe = HtmlFrame(root,messages_enabled = False) #create HTML browser
-htmlText = "<h1>Populáció genetikai szimuláció</h1><table  border = 1>"
+htmlText = "<h1>Populáció genetikai szimuláció</h1><table>"
 # Label = tk.Label(root, text="Populáció genetikai szimuláció")
 # Label.pack()
+
+displayHtml()
 
 Populacio = []
 NextGen = []
 
 Adam = Ember(Name = "Adam",pAllel1 = "BWB", pAllel2 = "WWW",Gender = "M")
-Eva = Ember(Name = "Eva",pAllel1 = "BWW", pAllel2 = "WBW",Gender = "F")
+Eva  = Ember(Name = "Eva",pAllel1 = "BWW", pAllel2 = "WBW",Gender = "F")
+Populacio.append(Adam)
+Populacio.append(Eva)
+
+htmlText = htmlText + "<tr>"
+for human in Populacio:
+    htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
+
+htmlText = htmlText + "</tr>"
+displayHtml()
+print("*** FINISH MAIN ***")
+
+#root.title('Populáció genetikai szimuláció')
+#root.resizable(width=True, height=True)
+
+# --------
+# THE LOOP
+# --------
+
+print("*** starting THE LOOP")
+NextGen = []
 
 Kain = birth(Name="Kain",Apa=Adam,Anya=Eva)
 Abel = birth(Name="Abel",Apa=Adam,Anya=Eva)
 Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
+Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
 
-Populacio.append(Adam)
-Populacio.append(Eva)
-Populacio.append(Kain)
-Populacio.append(Abel)
-Populacio.append(Seth)
+htmlText = htmlText + "<tr>"
+for human in NextGen:
+    htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
+    Populacio.append(human)
 
-for human in Populacio:
-    htmlText = htmlText + "<tr><td>" + human.Name + "</td>" + human.displayHtmlImage()
-    displayHtml()
+htmlText = htmlText + "</tr>"
+
+displayHtml()
 
 root.title('Populáció genetikai szimuláció')
 root.resizable(width=True, height=True)
@@ -215,7 +254,6 @@ button.place(x=500, y=50)
 #button = Button(text="PressMe",command=doSomething)
 #button.place(x=500, y=50)
 
-print("DONE")
+print("DONE (" + str(len(Populacio)) + ")")
 
-displayHtml()
 root.mainloop()
