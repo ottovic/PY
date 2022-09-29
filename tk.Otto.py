@@ -1,4 +1,3 @@
-
 from tkinter import *
 from tkinter import messagebox
 import tkinter as tk
@@ -12,35 +11,27 @@ class Ember:
     Name = ""
     Allel1 = []
     Allel2 = []
-    Gender = "M"
+    Gender = "X"
     Color = 0
-    ColorStr = ""
-    Kids = 12
+    Kids = 1000
     Partners = 2
+    Seq = 0
+    Partner = 0
 
     def __init__(self,Name,Gender,pAllel1,pAllel2):
-        color = 0
-#        print("INIT: " + Name + ":" + pAllel1 + "/" + pAllel2)
+        global Sequence
+        self.Seq = Sequence
+        Sequence = Sequence + 1
 
         self.Allel1 = []
         self.Allel2 = []
 
         for i in range(len(pAllel1)):
             self.Allel1.append(pAllel1[i])
-#            self.Allel1[i] = pAllel1[i]
-#            self.Allel2[i] = pAllel2[i]
             self.Allel2.append(pAllel2[i])
             self.Gender = Gender
-#            print("................" + str(i) + self.Allel1[i])
-
-#            if(self.Allel1[i]=="B" or self.Allel2[i] == "B"):
-#                color = color + 1
-#        print(self.Allel1[0]+self.Allel1[1]+self.Allel1[2]+"/"+self.Allel2[0]+self.Allel2[1]+self.Allel2[2])
-#        self.Color = color
         self.Name = Name
-#        self.ColorStr = str(self.Color)
         self.colorize()
-#        print("...Color:" + self.ColorStr)
 
     def colorize(self):
         color = 0
@@ -48,7 +39,13 @@ class Ember:
             if(self.Allel1[i]=="B" or self.Allel2[i] == "B"):
                 color = color + 1
         self.Color = color
-        self.ColorStr = str(self.Color)
+
+    def diversity(self):
+        diversity = 0
+        for i in range(len(self.Allel1)):
+            if(self.Allel1[i] != self.Allel2[i]):
+                diversity = diversity + 1
+        return(diversity)
 
     def display(self):
         text = self.Name
@@ -58,6 +55,10 @@ class Ember:
             text = text + ", FEMALE "
         text = text + ":" + self.ColorStr
         return(text)
+
+    def displayGenom(self):
+        genom = self.Allel1[0]+self.Allel1[1]+self.Allel1[2]+"/"+self.Allel2[0]+self.Allel2[1]+self.Allel2[2]
+        return(genom)
 
     def getImageFile(self):
         if (self.Color == 0):
@@ -72,10 +73,10 @@ class Ember:
         return(text)
 
     def displayHtmlImage(self):
-        text = "<img src=\"" + self.getImageFile()+ "\">"
+        text = "<img src=\"" + self.getImageFile()+ "\" width=\"30\" height=\"70\">"
+#        print(text)
         return(text)
         
-i = 1
 CYCLE = 1
 print("*** STARTING")
 random.seed(a=None, version=2)
@@ -87,21 +88,19 @@ def birth(Name,Apa,Anya):
     global CYCLE
     global NextGen
 
-    print("*** KID CREATION ***")
-    print("apa: " + Apa.Name +  ":" + Apa.Gender +  ":" + Apa.Allel1[0]  + Apa.Allel1[1]  + Apa.Allel1[2]  + "/" +  Apa.Allel2[0]  + Apa.Allel2[1]  + Apa.Allel2[2])
-    print("anya:" + Anya.Name + ":" + Anya.Gender + ":" + Anya.Allel1[0] + Anya.Allel1[1] + Anya.Allel1[2] + "/" +  Anya.Allel2[0] + Anya.Allel2[1] + Anya.Allel2[2])
+#    print("*** KID CREATION ***")
+#    print("apa: " + Apa.Seq +  ":" + Apa.Gender +  ":" + Apa.Allel1[0]  + Apa.Allel1[1]  + Apa.Allel1[2]  + "/" +  Apa.Allel2[0]  + Apa.Allel2[1]  + Apa.Allel2[2])
+#    print("anya:" + Anya.Seq + ":" + Anya.Gender + ":" + Anya.Allel1[0] + Anya.Allel1[1] + Anya.Allel1[2] + "/" +  Anya.Allel2[0] + Anya.Allel2[1] + Anya.Allel2[2])
     
     if(Anya.Kids == 0):
-        print("...anya " + Anya.Name + " exhausted")
         return(-1)
 
-    kid = Ember(Name = Name + " ben " + Apa.Name,Gender="X",pAllel1="XXX",pAllel2="XXX")
+    kid = Ember(Name = "",Gender="X",pAllel1="XXX",pAllel2="XXX")
     dice = random.randint(0,1)
     if dice == 0:
         kid.Gender = "M"
     else:
         kid.Gender = "F"
-#    print(str(dice) + kid.Gender)
 
     for j in range(len(Apa.Allel1)):
         dice = random.randint(0,1)
@@ -110,36 +109,122 @@ def birth(Name,Apa,Anya):
             kid.Allel1[j] = Apa.Allel1[j]
         else:
             kid.Allel1[j] = Apa.Allel2[j]
-#        print("....allel1 dice: " + str(dice) + ":" + kid.Allel1[j])
         dice = random.randint(0,1)
         if(dice == 0):
             kid.Allel2[j] = Anya.Allel1[j]
         else:
             kid.Allel2[j] = Anya.Allel2[j]
-#        print("....allel2 dice: " + str(dice) + ":" + kid.Allel2[j])
     kid.colorize()
 
-    print (kid.display() + "-" + kid.Allel1[0] + kid.Allel1[1] + kid.Allel1[2] + "/" + kid.Allel2[0] + kid.Allel2[1] + kid.Allel2[2])
+#   print (kid.display() + "-" + kid.Allel1[0] + kid.Allel1[1] + kid.Allel1[2] + "/" + kid.Allel2[0] + kid.Allel2[1] + kid.Allel2[2])
     Anya.Kids = Anya.Kids - 1
     NextGen.append(kid)
     return(kid)
+
+# --------------------------------
+# Dye due to unpleasant conditions
+# --------------------------------
+def dye():
+    global CurrentGen
+    global Cycle
+    DYE_0 = 0
+    DYE_1 = 10
+    DYE_2 = 50
+    DYE_3 = 70
+    i=0
+    print("ENTER IN DYE:"+str(len(CurrentGen)))
+    if(Cycle > 3):
+        i = 0
+        l = len(CurrentGen)
+        while(i<l):
+#            print("Die or not:" + str(CurrentGen[i].Seq))
+            dice = random.randint(0,100)
+            if(CurrentGen[i].Color == 0):
+                if(dice < DYE_0):
+                    print("Dead:"+str(CurrentGen[i].Seq)+"("+str(CurrentGen[i].Color)+")"+str(dice))
+                    CurrentGen.pop(i)
+            elif(CurrentGen[i].Color == 1):
+                if(dice < DYE_1):
+                    print("Dead:"+str(CurrentGen[i].Seq)+"("+str(CurrentGen[i].Color)+")"+str(dice))
+                    CurrentGen.pop(i)
+            elif(CurrentGen[i].Color == 2):
+                if(dice < DYE_2):
+                    print("Dead:"+str(CurrentGen[i].Seq)+"("+str(CurrentGen[i].Color)+")"+str(dice))
+                    CurrentGen.pop(i)
+            elif(CurrentGen[i].Color == 3):
+                if(dice < DYE_3):
+                    print("***Dead:"+str(CurrentGen[i].Seq)+"("+str(CurrentGen[i].Color)+")"+str(dice))
+                    CurrentGen.pop(i)
+            l = len(CurrentGen)
+            i = i + 1
+    print("EXIT FROM DYE:"+str(len(CurrentGen)))
+    return()
+
+# --------------------------
+# One generation (Monogamic)
+# --------------------------
+def genMonogamic():
+    global htmlText
+    global NextGen
+    global CurrentGen
+    global Populacio
+#    print("ENTER MONOGAMIC MATCH:" + str(len(CurrentGen)))
+#    NextGen = []
+    for man in CurrentGen:
+        for woman in CurrentGen:
+            if(man.Gender == "M" and man.Partner == 0):
+                if(woman.Gender == "F" and woman.Partner == 0):
+                    man.Partner = woman.Seq
+                    woman.Partner = man.Seq
+#                    print("...match:" + str(woman.Seq) + "-" + str(man.Seq))
+                    i = 0
+                    while i < 5:
+                        kid = birth(Name="",Apa=man,Anya=woman)
+                        i = i + 1
+
+    i = 0
+    CurrentGen = []
+    while i<len(NextGen) :
+        CurrentGen.append(NextGen[i])
+        i = i + 1
+    NextGen = []
+    print("COMPLETED MONOGAMIC MATCH:" + str(len(CurrentGen)))
+                        
+    diversity = 0
+    for human in CurrentGen:
+        diversity = diversity + human.diversity()
+
 
 # -----------------------------
 # Action when button is pressed
 # -----------------------------
 def doSomething():
+    global CurrentGen
+    global Cycle
     global htmlText
-    global ember
-    global i
-    i = i + 1
-    if int(i/2) == i/2 :
-        ember = Adam
-        print("Páros " + str(i) + "-" + ember.displayHtmlImage())
-    else :
-        ember = Eva
-        print("Páratlan " + str(i))
-    print("*** I am doing something ***");
-    htmlText = htmlText + "<tr><td>" + ember.display()+ "</td>" + ember.displayHtmlImage() + "</tr>"
+    Cycle = Cycle + 1
+    dye()
+    genMonogamic()
+
+#    print("Printing CurrentGen" + str(len(CurrentGen)))
+    diversity = 0
+    for human in CurrentGen:
+        diversity = diversity + human.diversity()
+
+    if(len(CurrentGen)==0):
+        htmlText = htmlText + "<tr><td><b>E X T I N C T</b></td>"
+    else:
+
+        htmlText = htmlText + "<tr>"
+        if(len(CurrentGen)==0):
+            htlText = htmlText + "<td>-</td>"
+        else:
+            htmlText = htmlText + "<td>" +  str(int(diversity/len(CurrentGen)*100)/100) + "</td>"
+
+        for human in CurrentGen:
+            htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
+
+    htmlText = htmlText + "</tr>"
     displayHtml()
 
 # -------------
@@ -151,8 +236,8 @@ def displayHtml():
 #    htmlTextFinal = htmlText + "</table>"
     htmlTextFinal = htmlText
 #    print(htmlText)
-    myhtmlframe.load_html(htmlTextFinal) #Load some HTML code
-    myhtmlframe.pack(fill="both", expand=True) #attach the HtmlFrame widget to the parent window
+    myhtmlframe.load_html(htmlTextFinal)
+    myhtmlframe.pack(fill="both", expand=True)
     return()
 
 # -----------------------------------------------------
@@ -169,6 +254,21 @@ def displayMan(pEmber,pX,pY):
     label1.image = test
     label1.place(x=pX, y=pY)
 
+#    htmlText = htmlText + "<tr>"
+    print("Diversity:"+str(diversity)+" population:"+str(len(CurrentGen)))
+    if(len(CurrentGen)!=0):
+        htmlText = htmlText + "<tr><td>" +  str(int(diversity/len(CurrentGen)*100)/100) + "</td>"
+    else:
+        htmlText = htmlText + "<tr><td> - </td>"
+
+    for human in CurrentGen:
+#        htmlText = htmlText + "<td><table><tr><td>" + human.displayHtmlImage() + "</td></tr>" + "<tr><td>" + human.displayGenom() + "</td></tr></table></td>"
+        htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
+        Populacio.append(human)
+
+    htmlText = htmlText + "</tr>"
+
+    displayHtml()
 
 # --------------------------------------------------
 # ----------------- MAIN ---------------------------
@@ -176,22 +276,31 @@ def displayMan(pEmber,pX,pY):
 root = tk.Tk()
 root.geometry("1500x700")
 
-myhtmlframe = HtmlFrame(root,messages_enabled = False) #create HTML browser
+Sequence = 1
+Cycle = 0
+
+myhtmlframe = HtmlFrame(root,messages_enabled = False,horizontal_scrollbar = "auto") #create HTML browser
 htmlText = "<h1>Populáció genetikai szimuláció</h1><table>"
-# Label = tk.Label(root, text="Populáció genetikai szimuláció")
-# Label.pack()
 
 displayHtml()
 
 Populacio = []
 NextGen = []
+CurrentGen = []
 
-Adam = Ember(Name = "Adam",pAllel1 = "BWB", pAllel2 = "WWW",Gender = "M")
-Eva  = Ember(Name = "Eva",pAllel1 = "BWW", pAllel2 = "WBW",Gender = "F")
+Adam = Ember(Name = "Adam",pAllel1 = "WBW", pAllel2 = "BWB",Gender = "M")
+Eva  = Ember(Name = "Eva", pAllel1 = "BWB", pAllel2 = "WWB",Gender = "F")
 Populacio.append(Adam)
 Populacio.append(Eva)
+CurrentGen.append(Adam)
+CurrentGen.append(Eva)
 
-htmlText = htmlText + "<tr>"
+diversity = 0
+for human in Populacio:
+    diversity = diversity + human.diversity()
+
+htmlText = htmlText + "<tr><td>" +  str(diversity/len(Populacio)) + "</td>"
+
 for human in Populacio:
     htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
 
@@ -201,39 +310,6 @@ print("*** FINISH MAIN ***")
 
 #root.title('Populáció genetikai szimuláció')
 #root.resizable(width=True, height=True)
-
-# --------
-# THE LOOP
-# --------
-
-print("*** starting THE LOOP")
-NextGen = []
-
-Kain = birth(Name="Kain",Apa=Adam,Anya=Eva)
-Abel = birth(Name="Abel",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-Seth = birth(Name="Seth",Apa=Adam,Anya=Eva)
-
-htmlText = htmlText + "<tr>"
-for human in NextGen:
-    htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
-    Populacio.append(human)
-
-htmlText = htmlText + "</tr>"
-
-displayHtml()
 
 root.title('Populáció genetikai szimuláció')
 root.resizable(width=True, height=True)
@@ -250,9 +326,6 @@ root.resizable(width=True, height=True)
 
 button = Button(text="PressMe",command=doSomething)
 button.place(x=500, y=50)
-
-#button = Button(text="PressMe",command=doSomething)
-#button.place(x=500, y=50)
 
 print("DONE (" + str(len(Populacio)) + ")")
 
