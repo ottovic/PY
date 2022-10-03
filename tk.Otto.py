@@ -13,8 +13,8 @@ class Ember:
     Allel2 = []
     Gender = "X"
     Color = 0
-    Kids = 1000
-    Partners = 2
+    Kids = 12
+#    Partners = 2
     Seq = 0
     Partner = 0
 
@@ -25,6 +25,8 @@ class Ember:
 
         self.Allel1 = []
         self.Allel2 = []
+
+#        self.Kids = random.randint(1,7)        
 
         for i in range(len(pAllel1)):
             self.Allel1.append(pAllel1[i])
@@ -46,15 +48,6 @@ class Ember:
             if(self.Allel1[i] != self.Allel2[i]):
                 diversity = diversity + 1
         return(diversity)
-
-    def display(self):
-        text = self.Name
-        if(self.Gender=="M"):
-            text = text + ", MALE "
-        else:
-            text = text + ", FEMALE "
-        text = text + ":" + self.ColorStr
-        return(text)
 
     def displayGenom(self):
         genom = self.Allel1[0]+self.Allel1[1]+self.Allel1[2]+"/"+self.Allel2[0]+self.Allel2[1]+self.Allel2[2]
@@ -128,12 +121,12 @@ def dye():
     global CurrentGen
     global Cycle
     DYE_0 = 0
-    DYE_1 = 10
+    DYE_1 = 5
     DYE_2 = 50
-    DYE_3 = 70
+    DYE_3 = 99
     i=0
     print("ENTER IN DYE:"+str(len(CurrentGen)))
-    if(Cycle > 3):
+    if(Cycle > 2):
         i = 0
         l = len(CurrentGen)
         while(i<l):
@@ -157,7 +150,7 @@ def dye():
                     CurrentGen.pop(i)
             l = len(CurrentGen)
             i = i + 1
-    print("EXIT FROM DYE:"+str(len(CurrentGen)))
+    print("EXIT FROM DIE:"+str(len(CurrentGen)))
     return()
 
 # --------------------------
@@ -174,11 +167,13 @@ def genMonogamic():
         for woman in CurrentGen:
             if(man.Gender == "M" and man.Partner == 0):
                 if(woman.Gender == "F" and woman.Partner == 0):
+                    noOfKids = random.randint(1,8)
+#                    print(str(woman.Seq)+" "+str(noOfKids))
                     man.Partner = woman.Seq
                     woman.Partner = man.Seq
 #                    print("...match:" + str(woman.Seq) + "-" + str(man.Seq))
                     i = 0
-                    while i < 5:
+                    while i < noOfKids:
                         kid = birth(Name="",Apa=man,Anya=woman)
                         i = i + 1
 
@@ -208,8 +203,10 @@ def doSomething():
 
 #    print("Printing CurrentGen" + str(len(CurrentGen)))
     diversity = 0
+    color = 0
     for human in CurrentGen:
         diversity = diversity + human.diversity()
+        color = color + human.Color
 
     if(len(CurrentGen)==0):
         htmlText = htmlText + "<tr><td><b>E X T I N C T</b></td>"
@@ -219,7 +216,12 @@ def doSomething():
         if(len(CurrentGen)==0):
             htlText = htmlText + "<td>-</td>"
         else:
-            htmlText = htmlText + "<td>" +  str(int(diversity/len(CurrentGen)*100)/100) + "</td>"
+            htmlText = htmlText + "<td>"
+            htmlText = htmlText + "<table>"
+            htmlText = htmlText + "<tr><td>" + str(len(CurrentGen)) + "</td></tr>"
+            htmlText = htmlText + "<tr><td>" + str(int(diversity/len(CurrentGen)*100)/100) + "</td></tr>"
+            htmlText = htmlText + "<tr><td>" + str(int(color/len(CurrentGen)*100)/100) + "</td></tr>"
+            htmlText = htmlText + "</table></td>"
 
         for human in CurrentGen:
             htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
@@ -257,7 +259,10 @@ def displayMan(pEmber,pX,pY):
 #    htmlText = htmlText + "<tr>"
     print("Diversity:"+str(diversity)+" population:"+str(len(CurrentGen)))
     if(len(CurrentGen)!=0):
-        htmlText = htmlText + "<tr><td>" +  str(int(diversity/len(CurrentGen)*100)/100) + "</td>"
+        htmlText = htmlText + "<tr><td><table>"
+        htmlText = htmlText + "<tr><td>" + str(len(CurrentGen)) + "</td></tr>"
+        htmlText = htmlText + "<tr><td>" +  str(int(diversity/len(CurrentGen)*100)/100) + "</td></tr>"
+        htmlText = htmlText + "</table></td>"
     else:
         htmlText = htmlText + "<tr><td> - </td>"
 
@@ -288,8 +293,8 @@ Populacio = []
 NextGen = []
 CurrentGen = []
 
-Adam = Ember(Name = "Adam",pAllel1 = "WBW", pAllel2 = "BWB",Gender = "M")
-Eva  = Ember(Name = "Eva", pAllel1 = "BWB", pAllel2 = "WWB",Gender = "F")
+Adam = Ember(Name = "Adam",pAllel1 = "WBW", pAllel2 = "BWW",Gender = "M")
+Eva  = Ember(Name = "Eva", pAllel1 = "WWB", pAllel2 = "WBB",Gender = "F")
 Populacio.append(Adam)
 Populacio.append(Eva)
 CurrentGen.append(Adam)
