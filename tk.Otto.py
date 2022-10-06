@@ -124,9 +124,10 @@ def dye():
     DYE_1 = 5
     DYE_2 = 50
     DYE_3 = 99
+    MIN_DYING_CYCLE = 3
     i=0
     print("ENTER IN DYE:"+str(len(CurrentGen)))
-    if(Cycle > 2):
+    if(Cycle > MIN_DYING_CYCLE):
         i = 0
         l = len(CurrentGen)
         while(i<l):
@@ -146,7 +147,7 @@ def dye():
                     CurrentGen.pop(i)
             elif(CurrentGen[i].Color == 3):
                 if(dice < DYE_3):
-                    print("***Dead:"+str(CurrentGen[i].Seq)+"("+str(CurrentGen[i].Color)+")"+str(dice))
+                    print("Dead:"+str(CurrentGen[i].Seq)+"("+str(CurrentGen[i].Color)+")"+str(dice))
                     CurrentGen.pop(i)
             l = len(CurrentGen)
             i = i + 1
@@ -161,13 +162,17 @@ def genMonogamic():
     global NextGen
     global CurrentGen
     global Populacio
+    global Cycle
 #    print("ENTER MONOGAMIC MATCH:" + str(len(CurrentGen)))
 #    NextGen = []
     for man in CurrentGen:
         for woman in CurrentGen:
             if(man.Gender == "M" and man.Partner == 0):
                 if(woman.Gender == "F" and woman.Partner == 0):
-                    noOfKids = random.randint(1,8)
+                    if(Cycle < 2):
+                        noOfKids = 6
+                    else:
+                        noOfKids = random.randint(1,8)
 #                    print(str(woman.Seq)+" "+str(noOfKids))
                     man.Partner = woman.Seq
                     woman.Partner = man.Seq
@@ -182,6 +187,7 @@ def genMonogamic():
     while i<len(NextGen) :
         CurrentGen.append(NextGen[i])
         i = i + 1
+    random.shuffle(CurrentGen)
     NextGen = []
     print("COMPLETED MONOGAMIC MATCH:" + str(len(CurrentGen)))
                         
@@ -202,6 +208,7 @@ def doSomething():
     genMonogamic()
 
 #    print("Printing CurrentGen" + str(len(CurrentGen)))
+# Displaying population
     diversity = 0
     color = 0
     for human in CurrentGen:
@@ -222,6 +229,7 @@ def doSomething():
             htmlText = htmlText + "<tr><td>" + str(int(diversity/len(CurrentGen)*100)/100) + "</td></tr>"
             htmlText = htmlText + "<tr><td>" + str(int(color/len(CurrentGen)*100)/100) + "</td></tr>"
             htmlText = htmlText + "</table></td>"
+
 
         for human in CurrentGen:
             htmlText = htmlText + "<td>" + human.displayHtmlImage() + "</td>"
