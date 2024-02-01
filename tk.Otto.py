@@ -9,6 +9,7 @@ from random import randrange
 class Ember:
     Genere = 1
     Name = ""
+#Allel is the collection of genome determining the color (ingerited from fathyr and mother)
     Allel1 = []
     Allel2 = []
     Gender = "X"
@@ -36,6 +37,7 @@ class Ember:
         self.colorize()
 
     def colorize(self):
+#Color of the person : 0=completely white, 3 = completely black
         color = 0
         for i in range(len(self.Allel1)):
             if(self.Allel1[i]=="B" or self.Allel2[i] == "B"):
@@ -43,15 +45,16 @@ class Ember:
         self.Color = color
 
     def diversity(self):
+#Diversity of the person is defined as the number of heterozígots (e.g. BW BW BW =>3)
         diversity = 0
         for i in range(len(self.Allel1)):
             if(self.Allel1[i] != self.Allel2[i]):
                 diversity = diversity + 1
         return(diversity)
 
-    def displayGenom(self):
-        genom = self.Allel1[0]+self.Allel1[1]+self.Allel1[2]+"/"+self.Allel2[0]+self.Allel2[1]+self.Allel2[2]
-        return(genom)
+#    def displayGenom(self):
+#        genom = self.Allel1[0]+self.Allel1[1]+self.Allel1[2]+"/"+self.Allel2[0]+self.Allel2[1]+self.Allel2[2]
+#        return(genom)
 
     def getImageFile(self):
         if (self.Color == 0):
@@ -225,9 +228,9 @@ def doSomething():
         else:
             htmlText = htmlText + "<td>"
             htmlText = htmlText + "<table>"
-            htmlText = htmlText + "<tr><td>" + str(len(CurrentGen)) + "</td></tr>"
-            htmlText = htmlText + "<tr><td>" + str(int(diversity/len(CurrentGen)*100)/100) + "</td></tr>"
-            htmlText = htmlText + "<tr><td>" + str(int(color/len(CurrentGen)*100)/100) + "</td></tr>"
+            htmlText = htmlText + "<tr><td>POPULATION:</td><td>" + str(len(CurrentGen)) + "</td></tr>"
+            htmlText = htmlText + "<tr><td>DIVERSITY :</td><td>" + str(int(diversity/len(CurrentGen)*100)/100) + "</td></tr>"
+            htmlText = htmlText + "<tr><td>COLOR     :</td><td>" + str(int(color/len(CurrentGen)*100)/100) + "</td></tr>"
             htmlText = htmlText + "</table></td>"
 
 
